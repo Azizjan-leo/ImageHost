@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ImageHost.Models.Work>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+@foreach (var m in Model)
+{
+    <div class="card" style="width: 18rem; margin-left: 35%">
+
+        <div class="card-body">
+            <p class="center-block text-center">@m.Title</p>
+            <img src="@Url.Content("~/Content/"+m.Image)" data-toggle="modal" data-target="#myModal" width="400" height="320" style="cursor: pointer;" class="card-img-top" alt="@m.Description">
+
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="card-text text-center">@m.Title</p>
+                        </div>
+                        <div class="modal-body">
+                            <img src="@Url.Content("~/Content/"+m.Image)" class="img-responsive">
+                            <br />
+                            <div>
+                                <p>
+                                    @m.Description
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
