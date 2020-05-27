@@ -14,7 +14,7 @@ namespace ImageHost.Controllers
             var works = new List<Work>();
             using (var db = new ApplicationDbContext())
             {
-                works = db.Works.ToList();
+                works = db.Works.Include("Author").ToList();
             }
             return View(works);
         }
