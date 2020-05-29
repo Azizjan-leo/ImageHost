@@ -81,7 +81,31 @@ namespace ImageHost.Controllers
         }
 
         //
-        // GET: /Manage/DeleteWork
+        // POST: /Manage/Index[EditWork]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditWork(int id, string title, string description)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", new { Message = "Error" });
+            }
+
+            using (var db = new ApplicationDbContext())
+            {
+                var work = db.Works.Find(id);
+                if(work == null)
+                    return RedirectToAction("Index", new { Message = "Error" });
+
+                db.Works.Add(work);
+                await db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", new { Message = "Work uploaded" });
+        }
+
+        //
+        // GET: /Manage/Index[DeleteWork]
         public async Task<ActionResult> DeleteWork(int id)
         {
             using (var db = new ApplicationDbContext())
@@ -99,6 +123,7 @@ namespace ImageHost.Controllers
             }
             return RedirectToAction("Index", new { Message = "Work has beed removed" });
         }
+
         //
         // POST: /Manage/Index[CreateWork]
         [HttpPost]
@@ -131,6 +156,7 @@ namespace ImageHost.Controllers
 
             return RedirectToAction("Index", new { Message = "Work uploaded" });
         }
+
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
