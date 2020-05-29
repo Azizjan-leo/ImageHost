@@ -8,36 +8,49 @@
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
+<div class="text-center text-primary">
+    <p style="font-weight:bold">
+        LAST WORKS
+    </p>
+</div>
+<div style='width:100%;overflow-y:auto'>
+    <table style='width:100%' class='table table-striped table-condensed'>
+        <tbody>
+            <tr>
+                @foreach (var m in Model)
+                {
+                <td>
+                    <div class="card card-body">
+                        <p class="center-block text-center">@m.Title</p>
+                        <img src="@Url.Content("~/Content/" + m.Image)" data-toggle="modal" data-target=@($"#{m.Id}modal") width="400" height="320" style="cursor: pointer;" class="card-img-top" alt="@m.Description">
+                    </div>
 
-@foreach (var m in Model)
-{
-    <div class="card" style="width: 18rem; margin-left: 35%">
-
-        <div class="card-body">
-            <p class="center-block text-center">@m.Title</p>
-            <img src="@Url.Content("~/Content/"+m.Image)" data-toggle="modal" data-target="#myModal" width="400" height="320" style="cursor: pointer;" class="card-img-top" alt="@m.Description">
-
-            <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <p class="card-text text-center">@m.Title</p>
-                        </div>
-                        <div class="modal-body">
-                            <img src="@Url.Content("~/Content/"+m.Image)" class="img-responsive">
-                            <br />
-                            <div>
-                                <p>
-                                    @m.Description
-                                </p>
-                                <p>
-                                    @m.Author.Name @m.DateUploaded
-                                </p>
+                    <div id=@($"{m.Id}modal") class="modal fade" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <p class="card-text text-center">@m.Title</p>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="@Url.Content("~/Content/"+m.Image)" class="img-responsive">
+                                    <br />
+                                    <div>
+                                        <p>
+                                            @m.Description
+                                        </p>
+                                        <p>
+                                            @m.Author.Name @m.DateUploaded
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+                </td>
+
+
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>

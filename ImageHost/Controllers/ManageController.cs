@@ -74,12 +74,31 @@ namespace ImageHost.Controllers
                     Logins = await UserManager.GetLoginsAsync(userId),
                     BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                     CWVM = new CreateWorkVM(),
-                    Works = db.Works.Where(x=>x.Author.Id == userId).ToList()
+                    Works = db.Works.Where(x=>x.Author.Id == userId).OrderByDescending(x=>x.DateUploaded).ToList()
                 };
                 return View(model);
             }
         }
 
+        //
+        // GET: /Manage/DeleteWork
+        public async Task<ActionResult> DeleteWork(int id)
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                var work = await db.Works.FindAsync(id);
+                if(work == null)
+                    return RedirectToAction("Index", new { Message = "Work not found" });
+                string filePath = Server.MapPath("~/Content/" + work.Image);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                db.Works.Remove(work);
+                await db.SaveChangesAsync();
+            }
+            return RedirectToAction("Index", new { Message = "Work has beed removed" });
+        }
         //
         // POST: /Manage/Index[CreateWork]
         [HttpPost]

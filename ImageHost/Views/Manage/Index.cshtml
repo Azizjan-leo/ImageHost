@@ -155,7 +155,12 @@
                                     <p>
                                         @m.Description
                                     </p>
+                                    <p>@m.DateUploaded</p>
                                 </div>
+                            </div>
+                            <div class="modal-footer">
+                                
+                                <div class="right">@Html.ActionLink("Delete", "DeleteWork", new { id = m.Id })</div>
                             </div>
                         </div>
                     </div>

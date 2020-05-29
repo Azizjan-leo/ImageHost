@@ -1,8 +1,6 @@
 ﻿using ImageHost.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ImageHost.Controllers
@@ -14,7 +12,7 @@ namespace ImageHost.Controllers
             var works = new List<Work>();
             using (var db = new ApplicationDbContext())
             {
-                works = db.Works.Include("Author").ToList();
+                works = db.Works.Include("Author").OrderByDescending(x =>x.DateUploaded).ToList();
             }
             return View(works);
         }
