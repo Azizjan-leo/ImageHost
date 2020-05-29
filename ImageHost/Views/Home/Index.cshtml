@@ -19,10 +19,10 @@
             <tr>
                 @foreach (var m in Model)
                 {
-                <td>
-                    <div class="card card-body">
+                <td style="vertical-align:middle" >
+                    <div class="card card-body" >
                         <p class="center-block text-center">@m.Title</p>
-                        <img src="@Url.Content("~/Content/" + m.Image)" data-toggle="modal" data-target=@($"#{m.Id}modal") width="400" height="320" style="cursor: pointer;" class="card-img-top" alt="@m.Description">
+                        <img src="@Url.Content("~/Content/" + m.Image)" data-toggle="modal" data-target=@($"#{m.Id}modal")  style="cursor: pointer;" class="card-img-top" alt="@m.Description">
                     </div>
 
                     <div id=@($"{m.Id}modal") class="modal fade" tabindex="-1" role="dialog">
