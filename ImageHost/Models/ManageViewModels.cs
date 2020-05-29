@@ -15,6 +15,8 @@ namespace ImageHost.Models
 
     public class IndexViewModel
     {
+        public string Email { get; set; }
+        public string Name { get; set; }
         public CreateWorkVM CWVM { get; set; }
         public List<Work> Works { get; set; }
         public bool HasPassword { get; set; }

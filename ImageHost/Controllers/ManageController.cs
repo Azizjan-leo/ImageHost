@@ -74,7 +74,9 @@ namespace ImageHost.Controllers
                     Logins = await UserManager.GetLoginsAsync(userId),
                     BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                     CWVM = new CreateWorkVM(),
-                    Works = db.Works.Where(x=>x.Author.Id == userId).OrderByDescending(x=>x.DateUploaded).ToList()
+                    Works = db.Works.Where(x => x.Author.Id == userId).OrderByDescending(x => x.DateUploaded).ToList(),
+                    Email = User.Identity.GetUserName(),
+                    Name = db.Users.Find(userId).Name
                 };
                 return View(model);
             }
@@ -96,12 +98,12 @@ namespace ImageHost.Controllers
                 var work = db.Works.Find(id);
                 if(work == null)
                     return RedirectToAction("Index", new { Message = "Error" });
-
-                db.Works.Add(work);
+                work.Title = title;
+                work.Description = description;
                 await db.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index", new { Message = "Work uploaded" });
+            return RedirectToAction("Index", new { Message = "Work updated" });
         }
 
         //
