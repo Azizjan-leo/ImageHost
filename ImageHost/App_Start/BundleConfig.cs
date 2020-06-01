@@ -25,6 +25,11 @@ namespace ImageHost
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/magnific-popup").Include(
+                      "~/Scripts/magnific-popup.js"));
+
+            bundles.Add(new StyleBundle("~/Content/magnific-popup").Include(
+                      "~/Content/magnific-popup.css"));
         }
     }
 }

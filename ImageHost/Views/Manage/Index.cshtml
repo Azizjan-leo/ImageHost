@@ -33,32 +33,32 @@
             @Html.ActionLink("Manage", "ManageLogins") ]
         </dd>
         @*
-        Phone Numbers can used as a second factor of verification in a two-factor authentication system.
+            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
 
-         See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-            for details on setting up this ASP.NET application to support two-factor authentication using SMS.
+             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
+                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
 
-         Uncomment the following block after you have set up two-factor authentication
+             Uncomment the following block after you have set up two-factor authentication
         *@
         @*
-        <dt>Phone Number:</dt>
-        <dd>
-            @(Model.PhoneNumber ?? "None")
-            @if (Model.PhoneNumber != null)
-            {
-                <br />
-                <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            <dt>Phone Number:</dt>
+            <dd>
+                @(Model.PhoneNumber ?? "None")
+                @if (Model.PhoneNumber != null)
                 {
-                    @Html.AntiForgeryToken()
-                    <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                    <br />
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
+                    }
                 }
-            }
-            else
-            {
-                <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
-            }
-        </dd>
+                else
+                {
+                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                }
+            </dd>
         *@
         <dt>Two-Factor Authentication:</dt>
         <dd>
@@ -67,25 +67,25 @@
                 for details on setting up this ASP.NET application to support two-factor authentication.
             </p>
             @*@if (Model.TwoFactor)
-            {
-                using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
-                    @Html.AntiForgeryToken()
-                    <text>Enabled
-                    <input type="submit" value="Disable" class="btn btn-link" />
-                    </text>
+                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Enabled
+                        <input type="submit" value="Disable" class="btn btn-link" />
+                        </text>
+                    }
                 }
-            }
-            else
-            {
-                using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                else
                 {
-                    @Html.AntiForgeryToken()
-                    <text>Disabled
-                    <input type="submit" value="Enable" class="btn btn-link" />
-                    </text>
-                }
-            }*@
+                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <text>Disabled
+                        <input type="submit" value="Enable" class="btn btn-link" />
+                        </text>
+                    }
+                }*@
         </dd>
     </dl>
 </div>
@@ -138,78 +138,108 @@
     </div>
 
     <!-- Work list-->
-    @foreach (var m in Model.Works)
-    {
-        <div class="card" style="width: 18rem; margin-left: 35%">
+    <div style="text-align: center;">
+        @foreach (var m in Model.Works)
+        {
 
-            <div class="card-body">
-                <p class="center-block text-center">@m.Title</p>
-                <img src="@Url.Content("~/Content/"+m.Image)" data-toggle="modal" data-target="#@($"{m.Id}View")" width="400" height="320" style="cursor: pointer;" class="card-img-top" alt="@m.Description">
 
-                <div id="@($"{m.Id}View")" class="modal fade" tabindex="-1" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+
+        <div class="zoom-gallery biv" height="220" >
+            <a href="@Url.Content("~/Content/" + m.Image)" height="220">
+                <img src="@Url.Content("~/Content/" + m.Image)" height="220" style=" width: 100%; max-width:300px; box-shadow: 0 0 10px rgba(0,0,0,0.5);
+                                padding: 1px; margin-right: 15px; margin-top: 15px;" />
+            </a>
+
+            <p> @m.Description</p>
+
+            <p>
+                @m.DateUploaded
+            <p>
+            <p>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-dismiss="modal" data-target="#@($"{m.Id}Edit")">Edit</button>
+            </p><p>    @Html.ActionLink("Delete", "DeleteWork", new { id = m.Id })
+            <p>
+        </div>
+        
+
+
+
+
+
+
+
+
+
+            <div id="@($"{m.Id}Edit")" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        @using (Html.BeginForm("EditWork", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" id="id" name="id" value=@m.Id>
                             <div class="modal-header">
-                                <p class="card-text text-center">@m.Title</p>
+                                <h5 class="modal-title" id="exampleModalLabel">Edit work</h5>
                             </div>
                             <div class="modal-body">
-                                <img src="@Url.Content("~/Content/"+m.Image)" class="img-responsive">
-                                <br />
-                                <div>
-                                    <p>
-                                        @m.Description
-                                    </p>
-                                    <p>@m.DateUploaded</p>
+                                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    @Html.LabelFor(md => md.CWVM.Title, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.TextBox("title", m.Title, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(md => md.CWVM.Description, new { @class = "col-md-2 control-label" })
+                                    <div class="col-md-10">
+                                        @Html.TextBox("description", m.Description, new { @class = "form-control" })
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-dismiss="modal" data-target="#@($"{m.Id}Edit")">Edit</button>
-                                <div class="right">@Html.ActionLink("Delete", "DeleteWork", new { id = m.Id })</div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" class="btn btn-default" value="Save" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
-
             </div>
-
+        }
         </div>
+    </div>
+    <style>
+        .biv {
+            display: inline-table;
+        }
 
-        <div id="@($"{m.Id}Edit")" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    @using (Html.BeginForm("EditWork", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" id="id" name="id" value=@m.Id>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit work</h5>
-                        </div>
-                        <div class="modal-body">
-                            @Html.ValidationSummary("", new { @class = "text-danger" })
+        .image-source-link {
+            color: #98C3D1;
+        }
 
-                            <div class="form-group">
-                                @Html.LabelFor(md => md.CWVM.Title, new { @class = "col-md-2 control-label" })
-                                <div class="col-md-10">
-                                    @Html.TextBox("title", m.Title, new { @class = "form-control" })
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(md => md.CWVM.Description, new { @class = "col-md-2 control-label" })
-                                <div class="col-md-10">
-                                    @Html.TextBox("description", m.Description, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" class="btn btn-default" value="Save" />
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    }
-</div>
+        .mfp-with-zoom .mfp-container,
+        .mfp-with-zoom.mfp-bg {
+            opacity: 0;
+            -webkit-backface-visibility: hidden;
+            /* ideally, transition speed should match zoom duration */
+            -webkit-transition: all 0.3s ease-out;
+            -moz-transition: all 0.3s ease-out;
+            -o-transition: all 0.3s ease-out;
+            transition: all 0.3s ease-out;
+        }
+
+        .mfp-with-zoom.mfp-ready .mfp-container {
+            opacity: 1;
+        }
+
+        .mfp-with-zoom.mfp-ready.mfp-bg {
+            opacity: 0.8;
+        }
+
+        .mfp-with-zoom.mfp-removing .mfp-container,
+        .mfp-with-zoom.mfp-removing.mfp-bg {
+            opacity: 0;
+        }
+    </style>
