@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ImageHost.Models;
+using System.IO;
+using System.Configuration;
 
 namespace ImageHost.Controllers
 {
@@ -139,13 +141,25 @@ namespace ImageHost.Controllers
 
             using (var db = new ApplicationDbContext())
             {
-                ImageFile.SaveAs(HttpContext.Server.MapPath("~/Content/")
-                                               + ImageFile.FileName);
+                string fileName = Path.GetFileNameWithoutExtension(ImageFile.FileName);
+                string imageExtansion = Path.GetExtension(ImageFile.FileName);
+              
+
+
+
+                fileName = fileName + DateTime.Now.ToString("yymmssfff") + imageExtansion;
+
+                string fileDirectoryPath = Path.Combine("/Content/", fileName);
+                string serverPath = Path.Combine(ConfigurationManager.AppSettings["FilePath"], Server.MapPath(fileDirectoryPath));
+                if (!Directory.Exists(serverPath)) Directory.CreateDirectory(serverPath.Replace(fileName, ""));
+                ImageFile.SaveAs(serverPath);
+
+               
                 var author = db.Users.Find(User.Identity.GetUserId());
 
                 var work = new Work
                 {
-                    Image = ImageFile.FileName,
+                    Image = fileName,
                     Title = model.CWVM.Title,
                     Description = model.CWVM.Description,
                     DateUploaded = DateTime.UtcNow,
